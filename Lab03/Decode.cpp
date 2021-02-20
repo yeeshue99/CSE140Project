@@ -1,7 +1,15 @@
+#include <string> 
 #include <iostream>
 #include <fstream>
-#include <string> 
 #include <map>
+#include <vector>
+#include <sstream>
+#include <iterator>
+#include "Decode.h"
+#include "Instruction.h"
+#include "RTypeInstruction.h"
+#include "ITypeInstruction.h"
+#include "JTypeInstruction.h"
 
 using namespace std;
 
@@ -44,39 +52,34 @@ bool is_r_type_instruction(long int binary)
     }
 }
 
-int main(int argc, char *argv[])
-{
+std::map<std::string, std::string> load_instruction_file(std::string filename){
+    map<std::string, std::string> instructionMap;
 
     ifstream inFile;
-    inFile.open("input.txt");
+    inFile.open(filename);
     if (!inFile)
     {
-        cerr << "Unable to open file datafile.txt";
+        cerr << "Unable to open file: " << filename;
         exit(1); // call system to stop
     }
+    string line;
+    string key;
 
-    string binaryIn;
-
-    //cout << "Enter the binary number: ";
-
-    getline(inFile, binaryIn);
-
-    inFile.close();
-
-    cout << "Input: " << binaryIn << endl;
-
-    long int firstSix = stoi(binaryIn.substr(0, 6));
-    if (is_r_type_instruction(firstSix))
+    while (getline(inFile,line) )
     {
-        cout << "Opcode: " << firstSix << " hex" << endl;
+        std::istringstream iss(line);
+        std::vector<std::string> results(std::istream_iterator<std::string>{iss},
+                                 std::istream_iterator<std::string>());
 
-        long int lastSix = stoi(binaryIn.substr(binaryIn.size() - 6));
-        //cout << lastSix << endl;
-        cout << "Function Code: " << convert_binary_to_hex(lastSix) << " hex" << endl;
+        key = results[0] + results[2];
+        
+        instructionMap.insert(std::pair<std::string, std::string>(key, results[1]));
+
+        //cout << key << " => " << instructionMap[key] << '\n';
     }
 
-    //long int binaryInt = stoi(binaryIn);
-    //cout << "Equivalent hexadecimal value: " << convert_binary_to_hex(binaryInt) << endl;
-
-    return 0;
+    return instructionMap;
 }
+
+
+
