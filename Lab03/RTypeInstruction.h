@@ -8,15 +8,17 @@ class RType: public Instruction {
     private:
         int op;
         std::string label;
-        int rs;
-        int rt;
-        int rd;
+        std::string rs;
+        std::string rt;
+        std::string rd;
         int shamt;
         int func;
+        std::map<std::string, std::string> registerMap;
 
     public:
         RType(int op, std::string label, int func);
-        RType(int op, std::string label, int rs, int rt, int rd, int shamt, int func);
+        RType(int op, std::string label, std::string rs, std::string rt, std::string rd, int shamt, 
+        int func, std::map<std::string, std::string>);
         void print();
 };
 
