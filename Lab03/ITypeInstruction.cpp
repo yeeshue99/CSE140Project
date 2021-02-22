@@ -23,9 +23,9 @@ IType::IType(int op, string label, string rs, string rt, int immediate, map<stri
 }
 
 void IType::print(){
-    cout << "Instruction Type: R " << endl;
+    cout << "Instruction Type: I " << endl;
     cout << "Operation: " << label << endl;
     cout << "Rs: " << registerMap[rs] << " (R" << rs << ")" << endl;
     cout << "Rt: " << registerMap[rt] << " (R" << rt << ")" << endl;
-    cout << "Immediate: " << immediate << endl;
+    cout << "Immediate: 0x" << immediate << endl;
 }

@@ -8,8 +8,8 @@ class IType: public Instruction {
     private:
         int op;
         std::string label;
-        string rs;
-        string rt;
+        std::string rs;
+        std::string rt;
         int immediate;
         std::map<std::string, std::string> registerMap;
 
