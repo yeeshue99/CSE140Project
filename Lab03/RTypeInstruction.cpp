@@ -12,11 +12,11 @@ RType::RType(int op, string label, int func)
     this->rs = "";
     this->rt = "";
     this->rd = "";
-    this->shamt = 0;
+    this->shamt = "";
     this->func = func;
 }
 
-RType::RType(int op, string label, string rs, string rt, string rd, int shamt,
+RType::RType(int op, string label, string rs, string rt, string rd, string shamt,
              int func, map<string, string> registerMap)
 {
     this->op = op;
@@ -36,6 +36,6 @@ void RType::print()
     cout << "Rs: " << registerMap[rs] << " (R" << rs << ")" << endl;
     cout << "Rt: " << registerMap[rt] << " (R" << rt << ")" << endl;
     cout << "Rd: " << registerMap[rd] << " (R" << rd << ")" << endl;
-    cout << "Shamt: " << shamt << endl;
+    cout << "Shamt: 0x" << shamt << endl;
     cout << "Func: 0x" << func << endl;
 }

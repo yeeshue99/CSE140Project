@@ -10,12 +10,12 @@ class IType: public Instruction {
         std::string label;
         std::string rs;
         std::string rt;
-        int immediate;
+        std::string immediate;
         std::map<std::string, std::string> registerMap;
 
     public:
         IType(int op, std::string label);
-        IType(int op, std::string label, std::string rs, std::string rt, int immediate, std::map<std::string, std::string> registerMap);
+        IType(int op, std::string label, std::string rs, std::string rt, std::string immediate, std::map<std::string, std::string> registerMap);
         void print();
 };
 

@@ -10,10 +10,10 @@ IType::IType(int op, string label){
     this->label = label;
     this->rs = "";
     this->rt = "";
-    this->immediate = 0;
+    this->immediate = "";
 }
 
-IType::IType(int op, string label, string rs, string rt, int immediate, map<string, string> registerMap){
+IType::IType(int op, string label, string rs, string rt, string immediate, map<string, string> registerMap){
     this->op = op;
     this->label = label;
     this->rs = rs;

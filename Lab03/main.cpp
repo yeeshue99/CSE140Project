@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
             string rs = convert_binary_to_hex_to_dec(binaryIn.substr(6, 5));
             string rt = convert_binary_to_hex_to_dec(binaryIn.substr(11, 5));
             string rd = convert_binary_to_hex_to_dec(binaryIn.substr(16, 5));
-            int shamt = convert_binary_to_hex(stoi(binaryIn.substr(21, 5)));
+            string shamt = convert_binary_to_hex(binaryIn.substr(21, 5));
 
             RType ins = RType(0, label, rs, rt, rd, shamt, convert_binary_to_hex(lastSix), registerSet);
             ins.print();
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
             long int opcode = convert_binary_to_hex(stoi(binaryIn.substr(0, 6)));
             string rs = convert_binary_to_hex_to_dec(binaryIn.substr(6, 5));
             string rt = convert_binary_to_hex_to_dec(binaryIn.substr(11, 5));
-            int imm = convert_binary_to_hex(stoi(binaryIn.substr(16, 16)));
+            string imm = convert_binary_to_hex(binaryIn.substr(16, 16));
 
             IType ins = IType(opcode, label, rs, rt, imm, registerSet);
             ins.print();

@@ -5,21 +5,23 @@
 
 using namespace std;
 
-JType::JType(int op, string label){
+JType::JType(int op, string label)
+{
     this->op = op;
     this->label = label;
     this->immediate = "";
 }
 
-JType::JType(int op, string label, string immediate){
+JType::JType(int op, string label, string immediate)
+{
     this->op = op;
     this->label = label;
     this->immediate = immediate;
 }
 
-void JType::print(){
+void JType::print()
+{
     cout << "Instruction Type: J" << endl;
     cout << "Operation: " << label << endl;
-    cout << "Address: 0000" << immediate << "00" << endl;
     cout << "Address: 0x" << convert_binary_to_hex(immediate) << endl;
 }
