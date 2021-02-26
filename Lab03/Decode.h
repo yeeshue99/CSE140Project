@@ -7,6 +7,7 @@
 
 long int convert_binary_to_hex(long int binary);
 std::string convert_binary_to_hex(std::string bin);
+std::string convert_binary_to_hex_to_dec(std::string bin);
 void createMap(std::unordered_map<std::string, char> *um);
 bool is_r_type_instruction(long int binary);
 std::map<std::string, std::string> load_instruction_file(std::string filename); 

@@ -5,7 +5,8 @@
 
 using namespace std;
 
-RType::RType(int op, string label, int func){
+RType::RType(int op, string label, int func)
+{
     this->op = op;
     this->label = label;
     this->rs = "";
@@ -15,8 +16,9 @@ RType::RType(int op, string label, int func){
     this->func = func;
 }
 
-RType::RType(int op, string label, string rs, string rt, string rd, int shamt, 
-int func, map<string, string> registerMap){
+RType::RType(int op, string label, string rs, string rt, string rd, int shamt,
+             int func, map<string, string> registerMap)
+{
     this->op = op;
     this->label = label;
     this->rs = rs;
@@ -27,12 +29,13 @@ int func, map<string, string> registerMap){
     this->registerMap = registerMap;
 }
 
-void RType::print(){
+void RType::print()
+{
     cout << "Instruction Type: R " << endl;
     cout << "Operation: " << label << endl;
     cout << "Rs: " << registerMap[rs] << " (R" << rs << ")" << endl;
     cout << "Rt: " << registerMap[rt] << " (R" << rt << ")" << endl;
     cout << "Rd: " << registerMap[rd] << " (R" << rd << ")" << endl;
-    cout << "Shamt: " << shamt <<  endl;
+    cout << "Shamt: " << shamt << endl;
     cout << "Func: 0x" << func << endl;
 }
