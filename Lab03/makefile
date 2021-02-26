@@ -1,5 +1,5 @@
-OBJS	= main.o Decode.o Instruction.o RTypeInstruction.o ITypeInstruction.o JTypeInstruction.o
-SOURCE	= main.cpp Decode.cpp Instruction.cpp RTypeInstruction.cpp ITypeInstruction.cpp JTypeInstruction.cpp
+OBJS	= Michael-Ngo_Eduardo-Flores.o Decode.o Instruction.o RTypeInstruction.o ITypeInstruction.o JTypeInstruction.o
+SOURCE	= Michael-Ngo_Eduardo-Flores.cpp Decode.cpp Instruction.cpp RTypeInstruction.cpp ITypeInstruction.cpp JTypeInstruction.cpp
 HEADER	= Decode.h Instruction.h RTypeInstruction.h ITypeInstruction.h JTypeInstruction.h
 OUT	= a.out
 LFLAGS	 = 
