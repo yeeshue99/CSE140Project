@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include <vector>
 #include "Decode.h"
 #include "Instruction.h"
 #include "RTypeInstruction.h"
@@ -13,6 +14,32 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 
+    // Array with all registers
+    long int registers[32];
+    for (int i = 0; i < 32; i++)
+    {
+        registers[i] = 0;
+    }
+
+    // $t1 = 0x20 (32)
+    // $t2 = 0x5 (5)
+    // $s0 = 0x70 (112)
+    registers[9] = 32;
+    registers[10] = 5;
+    registers[16] = 112;
+
+    // Array with all dynamic memory
+    long int dmem[32];
+    for (int i = 0; i < 32; i++)
+    {
+        dmem[i] = 0;
+    }
+
+    // 0x70 = 0x5 ([28] = 5)
+    // 0x74 = 0x10 ([29] = 16)
+    dmem[28] = 5;
+    dmem[29] = 16;
+
     ifstream inFile;
     inFile.open("input.txt");
     if (!inFile)
@@ -21,7 +48,35 @@ int main(int argc, char *argv[])
         exit(1); // call system to stop
     }
 
+    // Vector with all instructions in order
+    vector<string> instructions;
     string binaryIn;
+    while (getline(inFile, binaryIn))
+    {
+        instructions.push_back(binaryIn);
+    }
+
+    // pc
+    int pc = 0;
+    bool stillRunning = true;
+    while (stillRunning)
+    {
+
+        //if(!isStalling) fetch(pc);
+        //if(!isStalling) decode();
+        //execute();
+        //memory();
+        //writeback();
+
+        if (pc >= instructions.size() /* && with checking if all components are empty*/)
+        {
+            stillRunning = false;
+        }
+    }
+
+    // Command that is in each stage
+
+    // track each instruction in each stage
 
     //cout << "Enter the binary number: ";
     while (getline(inFile, binaryIn))
