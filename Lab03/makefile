@@ -1,12 +1,12 @@
-OBJS	= Michael-Ngo_Eduardo-Flores.o Decode.o Instruction.o RTypeInstruction.o ITypeInstruction.o JTypeInstruction.o
-SOURCE	= Michael-Ngo_Eduardo-Flores.cpp Decode.cpp Instruction.cpp RTypeInstruction.cpp ITypeInstruction.cpp JTypeInstruction.cpp
-HEADER	= Decode.h Instruction.h RTypeInstruction.h ITypeInstruction.h JTypeInstruction.h
-OUT	= a.out
-LFLAGS	 = 
-CC		= g++ 
-all: a.out
+OBJS	= Decode.o Instruction.o ITypeInstruction.o JTypeInstruction.o main.o RTypeInstruction.o
+SOURCE	= Decode.cpp Instruction.cpp ITypeInstruction.cpp JTypeInstruction.cpp main.cpp RTypeInstruction.cpp
+HEADER	= Decode.h Instruction.h ITypeInstruction.h JTypeInstruction.h RTypeInstruction.h
+OUT		= a.exe
+LFLAGS	= 
+CC		= g++
+all: a.exe
 
-a.out: $(OBJS)
+a.exe: $(OBJS)
 	$(CC) -o $@ $^ $(LFLAGS)
 
 %.o: %.c $(HEADER)
