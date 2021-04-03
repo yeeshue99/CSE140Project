@@ -76,7 +76,9 @@ int main(int argc, char *argv[])
     bool isStalling = false;
     while (stillRunning)
     {
+        /*
 #pragma region Active Operations
+
         if (!(instructionToWriteBack == NULL))
         {
             instructionToWriteBack.writeBack();
@@ -160,6 +162,9 @@ int main(int argc, char *argv[])
         instructionToDecode = instructions[instructionToFetch];
         instructionToFetch = pc;
 #pragma endregion
+*/
+
+        // Do logic here.
         if (pc >= instructions.size() /* && with checking if all components are empty*/)
         {
             stillRunning = false;
