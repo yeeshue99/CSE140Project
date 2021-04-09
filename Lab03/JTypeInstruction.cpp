@@ -25,3 +25,7 @@ void JType::print()
     cout << "Operation: " << label << endl;
     cout << "Address: 0x" << convert_binary_to_hex(immediate) << endl;
 }
+
+void JType::execute(long registers[32], long dmem[32])
+{
+}

@@ -4,22 +4,25 @@
 #include "Instruction.h"
 #include <string>
 
+using namespace std;
+
 class RType: public Instruction {
     private:
         int op;
-        std::string label;
-        std::string rs;
-        std::string rt;
-        std::string rd;
-        std::string shamt;
+        string label;
+        string rs;
+        string rt;
+        string rd;
+        string shamt;
         int func;
-        std::map<std::string, std::string> registerMap;
+        map<string, string> registerMap;
 
     public:
-        RType(int op, std::string label, int func);
-        RType(int op, std::string label, std::string rs, std::string rt, std::string rd, std::string shamt, 
-        int func, std::map<std::string, std::string>);
+        RType(int op, string label, int func);
+        RType(int op, string label, string rs, string rt, string rd, string shamt, 
+        int func, map<string, string>);
         void print();
+        void execute(long registers[32], long dmem[32]);
 };
 
 #endif

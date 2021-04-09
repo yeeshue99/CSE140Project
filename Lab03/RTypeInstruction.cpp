@@ -39,3 +39,7 @@ void RType::print()
     cout << "Shamt: 0x" << shamt << endl;
     cout << "Func: 0x" << func << endl;
 }
+
+void RType::execute(long registers[32], long dmem[32])
+{
+}

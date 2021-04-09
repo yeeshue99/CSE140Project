@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
         instructionToFetch = pc / 4;
         instructionToDecode = instructions[instructionToFetch];
         instructionToExecute = decode(instructionToDecode, registerSet, instructionSet);
-        instructionToExecute.execute();
+        instructionToExecute.execute(registers, dmem);
         // Do logic here.
         if (pc >= instructions.size() /* && with checking if all components are empty*/)
         {

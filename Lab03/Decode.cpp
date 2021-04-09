@@ -93,8 +93,8 @@ string convert_binary_to_hex_to_dec(string bin)
         }
 
         unsigned int x;
-        std::stringstream ss;
-        ss << std::hex << hex;
+        stringstream ss;
+        ss << hex << hex;
         ss >> x;
         hex = to_string(x);
 
@@ -193,9 +193,9 @@ bool is_r_type_instruction(long int binary)
     }
 }
 
-std::map<std::string, std::string> load_instruction_file(std::string filename)
+map<string, string> load_instruction_file(string filename)
 {
-    map<std::string, std::string> instructionMap;
+    map<string, string> instructionMap;
 
     ifstream inFile;
     inFile.open(filename);
@@ -209,13 +209,13 @@ std::map<std::string, std::string> load_instruction_file(std::string filename)
 
     while (getline(inFile, line))
     {
-        std::istringstream iss(line);
-        std::vector<std::string> results(std::istream_iterator<std::string>{iss},
-                                         std::istream_iterator<std::string>());
+        istringstream iss(line);
+        vector<string> results(istream_iterator<string>{iss},
+                               istream_iterator<string>());
 
         key = results[0] + results[2];
 
-        instructionMap.insert(std::pair<std::string, std::string>(key, results[1]));
+        instructionMap.insert(pair<string, string>(key, results[1]));
 
         //cout << key << " => " << instructionMap[key] << '\n';
     }
@@ -223,9 +223,9 @@ std::map<std::string, std::string> load_instruction_file(std::string filename)
     return instructionMap;
 }
 
-std::map<std::string, std::string> load_register_file(std::string filename)
+map<string, string> load_register_file(string filename)
 {
-    map<std::string, std::string> registermap;
+    map<string, string> registermap;
 
     ifstream inFile;
     inFile.open(filename);
@@ -239,13 +239,13 @@ std::map<std::string, std::string> load_register_file(std::string filename)
 
     while (getline(inFile, line))
     {
-        std::istringstream iss(line);
-        std::vector<std::string> results(std::istream_iterator<std::string>{iss},
-                                         std::istream_iterator<std::string>());
+        istringstream iss(line);
+        vector<string> results(istream_iterator<string>{iss},
+                               istream_iterator<string>());
 
         key = results[0];
 
-        registermap.insert(std::pair<std::string, std::string>(key, results[1]));
+        registermap.insert(pair<string, string>(key, results[1]));
 
         //cout << key << " => " << instructionMap[key] << '\n';
     }
@@ -253,7 +253,7 @@ std::map<std::string, std::string> load_register_file(std::string filename)
     return registermap;
 }
 
-Instruction Decode(std::string binaryIn, std::map<std::string, std::string> registerSet, std::map<std::string, std::string> instructionSet)
+Instruction decode(string binaryIn, map<string, string> registerSet, map<string, string> instructionSet)
 {
     string firstSix = binaryIn.substr(0, 6);
     string key;

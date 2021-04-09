@@ -19,6 +19,6 @@ void Instruction::memory()
 {
 }
 
-void Instruction::execute()
+void Instruction::execute(long registers[32], long dmem[32])
 {
 }

@@ -8,7 +8,7 @@ class Instruction {
         bool operator==(const int& rhs) const;
         void writeBack();
         void memory();
-        void execute();
+        void execute(long registers[32], long dmem[32]);
 };
 
 #endif
