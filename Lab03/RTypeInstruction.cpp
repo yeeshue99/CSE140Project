@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <map>
+#include <unordered_map>
 #include "RTypeInstruction.h"
 
 using namespace std;
@@ -9,15 +9,15 @@ RType::RType(int op, string label, int func)
 {
     this->op = op;
     this->label = label;
-    this->rs = "";
-    this->rt = "";
-    this->rd = "";
-    this->shamt = "";
+    this->rs = 0;
+    this->rt = 0;
+    this->rd = 0;
+    this->shamt = 0;
     this->func = func;
 }
 
-RType::RType(int op, string label, string rs, string rt, string rd, string shamt,
-             int func, map<string, string> registerMap)
+RType::RType(int op, string label, long long int rs, long long int rt, long long int rd, long long int shamt,
+             int func, unordered_map<long long int, string> registerMap)
 {
     this->op = op;
     this->label = label;
@@ -40,6 +40,34 @@ void RType::print()
     cout << "Func: 0x" << func << endl;
 }
 
-void RType::execute(long registers[32], long dmem[32])
+void RType::execute(long registers[32], unordered_map<long long int, long long int> dmem, int &pc)
 {
+    unsigned int strHash = this->str2int(label.c_str(), 0);
+
+    if (strHash == this->str2int("add", 0))
+    {
+        cout << "ADD" << endl;
+    }
+    else if (strHash == this->str2int("sub", 0))
+    {
+        cout << "SUB" << endl;
+        registers[rd] = registers[rs] - registers[rt];
+    }
+    else if (strHash == this->str2int("and", 0))
+    {
+        cout << "AND" << endl;
+    }
+    else if (strHash == this->str2int("or", 0))
+    {
+        cout << "OR" << endl;
+    }
+    else if (strHash == this->str2int("slt", 0))
+    {
+        cout << "SLT" << endl;
+        registers[rd] = registers[rs] < registers[rt] ? 1 : 0;
+    }
+    else if (strHash == this->str2int("nor", 0))
+    {
+        cout << "NOR" << endl;
+    }
 }

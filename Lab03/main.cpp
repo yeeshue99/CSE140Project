@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <map>
+#include <unordered_map>
 #include <vector>
 #include "Decode.h"
 #include "Instruction.h"
@@ -29,16 +29,12 @@ int main(int argc, char *argv[])
     registers[16] = 112;
 
     // Array with all dynamic memory
-    long int dmem[32];
-    for (int i = 0; i < 32; i++)
-    {
-        dmem[i] = 0;
-    }
+    unordered_map<long long int, long long int> dmem;
 
-    // 0x70 = 0x5 ([28] = 5)
-    // 0x74 = 0x10 ([29] = 16)
-    dmem[28] = 5;
-    dmem[29] = 16;
+    // 0x70 = 0x5 ([112] = 5)
+    // 0x74 = 0x10 ([116] = 16)
+    dmem[112] = 5;
+    dmem[116] = 16;
 
     ifstream inFile;
     inFile.open("input.txt");
@@ -58,18 +54,18 @@ int main(int argc, char *argv[])
 
     inFile.close();
 
-    std::map<std::string, std::string> instructionSet;
+    unordered_map<string, string> instructionSet;
     instructionSet = load_instruction_file("instructions.txt");
 
-    std::map<std::string, std::string> registerSet;
+    unordered_map<long long int, string> registerSet;
     registerSet = load_register_file("registers.txt");
 
     int instructionToFetch;
-    std::string instructionToDecode;
-    Instruction instructionAfterDecoding;
-    Instruction instructionToExecute;
-    Instruction instructionToMemory;
-    Instruction instructionToWriteBack;
+    string instructionToDecode;
+    Instruction *instructionAfterDecoding;
+    Instruction *instructionToExecute = NULL;
+    Instruction *instructionToMemory;
+    Instruction *instructionToWriteBack;
 
     int pc = 0;
     bool stillRunning = true;
@@ -112,13 +108,22 @@ int main(int argc, char *argv[])
 */
         instructionToFetch = pc / 4;
         instructionToDecode = instructions[instructionToFetch];
+        // if (instructionToExecute != NULL)
+        // {
+        //     delete instructionToExecute;
+        //     instructionToExecute = NULL;
+        // }
+
         instructionToExecute = decode(instructionToDecode, registerSet, instructionSet);
-        instructionToExecute.execute(registers, dmem);
+        instructionToExecute->execute(registers, dmem, pc);
+        //instructionToExecute->print();
+        pc += 4;
         // Do logic here.
-        if (pc >= instructions.size() /* && with checking if all components are empty*/)
+        if (pc / 4 >= instructions.size() /* && with checking if all components are empty*/)
         {
             stillRunning = false;
         }
+        cout << endl;
     }
     return 0;
 }

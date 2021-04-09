@@ -26,6 +26,12 @@ void JType::print()
     cout << "Address: 0x" << convert_binary_to_hex(immediate) << endl;
 }
 
-void JType::execute(long registers[32], long dmem[32])
+void JType::execute(long registers[32], unordered_map<long long int, long long int> dmem, int &pc)
 {
+    unsigned int strHash = this->str2int(label.c_str(), 0);
+
+    if (strHash == this->str2int("j", 0))
+    {
+        cout << "J" << endl;
+    }
 }

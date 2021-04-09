@@ -11,6 +11,7 @@
 #include "ITypeInstruction.h"
 #include "JTypeInstruction.h"
 #include <unordered_map>
+//#include <boost/algorithm/string.hpp>
 
 using namespace std;
 
@@ -160,6 +161,13 @@ string convert_binary_to_hex(string bin)
     }
 }
 
+long long int simpleBinaryToDecimal(string bin)
+{
+    char *pEnd;
+    long long int ull = strtoull(bin.c_str(), &pEnd, 2);
+    return ull;
+}
+
 void createMap(unordered_map<string, char> *um)
 {
     (*um)["0000"] = '0';
@@ -193,9 +201,9 @@ bool is_r_type_instruction(long int binary)
     }
 }
 
-map<string, string> load_instruction_file(string filename)
+unordered_map<string, string> load_instruction_file(string filename)
 {
-    map<string, string> instructionMap;
+    unordered_map<string, string> instructionMap;
 
     ifstream inFile;
     inFile.open(filename);
@@ -223,9 +231,9 @@ map<string, string> load_instruction_file(string filename)
     return instructionMap;
 }
 
-map<string, string> load_register_file(string filename)
+unordered_map<long long int, string> load_register_file(string filename)
 {
-    map<string, string> registermap;
+    unordered_map<long long int, string> registermap;
 
     ifstream inFile;
     inFile.open(filename);
@@ -236,6 +244,7 @@ map<string, string> load_register_file(string filename)
     }
     string line;
     string key;
+    long long int keyInt;
 
     while (getline(inFile, line))
     {
@@ -244,8 +253,9 @@ map<string, string> load_register_file(string filename)
                                istream_iterator<string>());
 
         key = results[0];
+        keyInt = atoi(key.c_str());
 
-        registermap.insert(pair<string, string>(key, results[1]));
+        registermap.insert(pair<long long int, string>(keyInt, results[1]));
 
         //cout << key << " => " << instructionMap[key] << '\n';
     }
@@ -253,11 +263,10 @@ map<string, string> load_register_file(string filename)
     return registermap;
 }
 
-Instruction decode(string binaryIn, map<string, string> registerSet, map<string, string> instructionSet)
+Instruction *decode(string binaryIn, unordered_map<long long int, string> registerSet, unordered_map<string, string> instructionSet)
 {
     string firstSix = binaryIn.substr(0, 6);
     string key;
-    Instruction instructionAfterDecoding;
     if (is_r_type_instruction(stoi(firstSix)))
     {
         key = "r";
@@ -269,14 +278,13 @@ Instruction decode(string binaryIn, map<string, string> registerSet, map<string,
 
         long int lastSix = stoi(binaryIn.substr(binaryIn.size() - 7));
 
-        string rs = convert_binary_to_hex_to_dec(binaryIn.substr(6, 5));
-        string rt = convert_binary_to_hex_to_dec(binaryIn.substr(11, 5));
-        string rd = convert_binary_to_hex_to_dec(binaryIn.substr(16, 5));
-        string shamt = convert_binary_to_hex(binaryIn.substr(21, 5));
+        long long int rs = simpleBinaryToDecimal(binaryIn.substr(6, 5));
+        long long int rt = simpleBinaryToDecimal(binaryIn.substr(11, 5));
+        long long int rd = simpleBinaryToDecimal(binaryIn.substr(16, 5));
+        long long int shamt = simpleBinaryToDecimal(binaryIn.substr(21, 5));
 
-        RType ins = RType(0, label, rs, rt, rd, shamt, convert_binary_to_hex(lastSix), registerSet);
-        instructionAfterDecoding = ins;
-        return instructionAfterDecoding;
+        Instruction *i = new RType(0, label, rs, rt, rd, shamt, convert_binary_to_hex(lastSix), registerSet);
+        return i;
     }
 
     key = "i" + firstSix;
@@ -286,13 +294,12 @@ Instruction decode(string binaryIn, map<string, string> registerSet, map<string,
         label = instructionSet[key];
 
         long int opcode = convert_binary_to_hex(stoi(binaryIn.substr(0, 6)));
-        string rs = convert_binary_to_hex_to_dec(binaryIn.substr(6, 5));
-        string rt = convert_binary_to_hex_to_dec(binaryIn.substr(11, 5));
-        string imm = convert_binary_to_hex(binaryIn.substr(16, 16));
+        long long int rs = simpleBinaryToDecimal(binaryIn.substr(6, 5));
+        long long int rt = simpleBinaryToDecimal(binaryIn.substr(11, 5));
+        long long int imm = simpleBinaryToDecimal(binaryIn.substr(16, 16));
 
-        IType ins = IType(opcode, label, rs, rt, imm, registerSet);
-        instructionAfterDecoding = ins;
-        return instructionAfterDecoding;
+        Instruction *i = new IType(opcode, label, rs, rt, imm, registerSet);
+        return i;
     }
 
     key = "j" + firstSix;
@@ -303,13 +310,13 @@ Instruction decode(string binaryIn, map<string, string> registerSet, map<string,
         long int opcode = convert_binary_to_hex(stoi(binaryIn.substr(0, 6)));
 
         string address = binaryIn.substr(6, 26);
-        JType ins = JType(opcode, label, address);
-        instructionAfterDecoding = ins;
-        return instructionAfterDecoding;
+        static Instruction *i = new JType(opcode, label, address);
+        return i;
     }
     else
     {
         cout << "Instruction not found!" << endl;
-        return Instruction();
+        Instruction *noVal;
+        return noVal;
     }
 }

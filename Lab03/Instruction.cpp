@@ -1,24 +1,9 @@
 #include <iostream>
 #include "Instruction.h"
 
-void Instruction::print()
-{
-    std::cout << "Instruction!" << std::endl;
-}
+using namespace std;
 
-bool Instruction::operator==(const int &rhs) const
+unsigned int Instruction::str2int(const char *str, int h)
 {
-    return true;
-}
-
-void Instruction::writeBack()
-{
-}
-
-void Instruction::memory()
-{
-}
-
-void Instruction::execute(long registers[32], long dmem[32])
-{
+    return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
 }

@@ -2,6 +2,7 @@
 #define JTYPE_H
 
 #include "Instruction.h"
+#include "Decode.h"
 #include <string>
 
 using namespace std;
@@ -15,8 +16,8 @@ class JType: public Instruction {
     public:
         JType(int op, string label);
         JType(int op, string label, string immediate);
-        void print();
-        void execute(long registers[32], long dmem[32]);
+        virtual void print();
+        void execute(long registers[32], unordered_map<long long int, long long int> dmem, int & pc);
 };
 
 #endif
