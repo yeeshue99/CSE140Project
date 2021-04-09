@@ -252,3 +252,64 @@ std::map<std::string, std::string> load_register_file(std::string filename)
 
     return registermap;
 }
+
+Instruction Decode(std::string binaryIn, std::map<std::string, std::string> registerSet, std::map<std::string, std::string> instructionSet)
+{
+    string firstSix = binaryIn.substr(0, 6);
+    string key;
+    Instruction instructionAfterDecoding;
+    if (is_r_type_instruction(stoi(firstSix)))
+    {
+        key = "r";
+        key.append(binaryIn.substr(binaryIn.size() - 7));
+        key.pop_back();
+
+        string label;
+        label = instructionSet[key];
+
+        long int lastSix = stoi(binaryIn.substr(binaryIn.size() - 7));
+
+        string rs = convert_binary_to_hex_to_dec(binaryIn.substr(6, 5));
+        string rt = convert_binary_to_hex_to_dec(binaryIn.substr(11, 5));
+        string rd = convert_binary_to_hex_to_dec(binaryIn.substr(16, 5));
+        string shamt = convert_binary_to_hex(binaryIn.substr(21, 5));
+
+        RType ins = RType(0, label, rs, rt, rd, shamt, convert_binary_to_hex(lastSix), registerSet);
+        instructionAfterDecoding = ins;
+        return instructionAfterDecoding;
+    }
+
+    key = "i" + firstSix;
+    if (instructionSet.count(key) > 0)
+    {
+        string label;
+        label = instructionSet[key];
+
+        long int opcode = convert_binary_to_hex(stoi(binaryIn.substr(0, 6)));
+        string rs = convert_binary_to_hex_to_dec(binaryIn.substr(6, 5));
+        string rt = convert_binary_to_hex_to_dec(binaryIn.substr(11, 5));
+        string imm = convert_binary_to_hex(binaryIn.substr(16, 16));
+
+        IType ins = IType(opcode, label, rs, rt, imm, registerSet);
+        instructionAfterDecoding = ins;
+        return instructionAfterDecoding;
+    }
+
+    key = "j" + firstSix;
+    if (instructionSet.count(key) > 0)
+    {
+        string label;
+        label = instructionSet[key];
+        long int opcode = convert_binary_to_hex(stoi(binaryIn.substr(0, 6)));
+
+        string address = binaryIn.substr(6, 26);
+        JType ins = JType(opcode, label, address);
+        instructionAfterDecoding = ins;
+        return instructionAfterDecoding;
+    }
+    else
+    {
+        cout << "Instruction not found!" << endl;
+        return Instruction();
+    }
+}
