@@ -1,16 +1,16 @@
-OBJS	= Decode.o Instruction.o ITypeInstruction.o JTypeInstruction.o RTypeInstruction.o main.o
-SOURCE	= Decode.cpp Instruction.cpp ITypeInstruction.cpp JTypeInstruction.cpp RTypeInstruction.cpp main.cpp
-HEADER	= Decode.h Instruction.h ITypeInstruction.h JTypeInstruction.h RTypeInstruction.h
+OBJS	= Decode.o Instruction.o I_Type.o J_Type.o R_Type.o main.o
+SOURCE	= Decode.cpp Instruction.cpp I_Type.cpp J_Type.cpp R_Type.cpp main.cpp
+HEADER	= Decode.h Instruction.h I_Type.h J_Type.h R_Type.h
 OUT		= a.exe
-LFLAGS	= 
-CC		= g++
+CXXFLAGS	= -g -Wall -std=c++17
+CXX		= g++
 all: a.exe
 
 a.exe: $(OBJS)
-	$(CC) -o $@ $^ $(LFLAGS)
+	$(CXX) $(CFLAGS) -o $@ $^ $(CXXFLAGS)
 
 %.o: %.c $(HEADER)
-	$(CC) -c -o $@ $< $(LFLAGS)
+	$(CXX) $(CFLAGS) -c -o $@ $< $(CXXFLAGS)
 
 clean:
 	rm -f $(OBJS) $(OUT)
