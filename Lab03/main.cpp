@@ -5,9 +5,9 @@
 #include <vector>
 #include "Decode.h"
 #include "Instruction.h"
-#include "RTypeInstruction.h"
-#include "ITypeInstruction.h"
-#include "JTypeInstruction.h"
+#include "R_Type.h"
+#include "I_Type.h"
+#include "J_Type.h"
 
 using namespace std;
 
@@ -62,16 +62,19 @@ int main(int argc, char *argv[])
 
     int instructionToFetch;
     string instructionToDecode;
-    Instruction *instructionAfterDecoding;
+    //Instruction *instructionAfterDecoding;
     Instruction *instructionToExecute = NULL;
-    Instruction *instructionToMemory;
-    Instruction *instructionToWriteBack;
+    //Instruction *instructionToMemory;
+    //Instruction *instructionToWriteBack;
 
-    int pc = 0;
+    unsigned int pc = 0;
     bool stillRunning = true;
-    bool isStalling = false;
+    //bool isStalling = false;
+
+    unsigned int total_clock_cycles = 0;
     while (stillRunning)
     {
+        cout << "total_clock_cycles " << total_clock_cycles + 1 << " :" << endl;
         /*
 #pragma region Active Operations
 
@@ -118,12 +121,17 @@ int main(int argc, char *argv[])
         instructionToExecute->execute(registers, dmem, pc);
         //instructionToExecute->print();
         pc += 4;
-        // Do logic here.
+        cout << "pc is modified to " << pc << endl;
+        total_clock_cycles++;
         if (pc / 4 >= instructions.size() /* && with checking if all components are empty*/)
         {
             stillRunning = false;
         }
         cout << endl;
     }
+
+    cout << "program terminated:" << endl;
+    cout << "total execution time is " << total_clock_cycles << " cycles" << endl;
+
     return 0;
 }
