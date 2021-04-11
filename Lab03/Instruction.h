@@ -11,7 +11,7 @@ class Instruction {
         bool operator==(const int& rhs) const;
         virtual void writeBack(){};
         virtual void memory(){};
-        virtual void execute(long registers[32], unordered_map<long long int, long long int> dmem, int &pc){};
+        virtual void execute(long registers[32], unordered_map<long long int, long long int> dmem, unsigned int &pc){};
         unsigned int str2int(const char *str, int h);
         virtual ~Instruction(){};
 };

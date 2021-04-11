@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "JTypeInstruction.h"
+#include "J_Type.h"
 #include "Decode.h"
 
 using namespace std;
@@ -26,12 +26,13 @@ void JType::print()
     cout << "Address: 0x" << convert_binary_to_hex(immediate) << endl;
 }
 
-void JType::execute(long registers[32], unordered_map<long long int, long long int> dmem, int &pc)
+void JType::execute(long registers[32], unordered_map<long long int, long long int> dmem, unsigned int &pc)
 {
     unsigned int strHash = this->str2int(label.c_str(), 0);
 
     if (strHash == this->str2int("j", 0))
     {
-        cout << "J" << endl;
+        //cout << "J" << endl;
+        pc = simpleBinaryToDecimal(immediate);
     }
 }

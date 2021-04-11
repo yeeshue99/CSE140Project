@@ -17,7 +17,7 @@ class JType: public Instruction {
         JType(int op, string label);
         JType(int op, string label, string immediate);
         virtual void print();
-        void execute(long registers[32], unordered_map<long long int, long long int> dmem, int & pc);
+        void execute(long registers[32], unordered_map<long long int, long long int> dmem, unsigned int &pc);
 };
 
 #endif

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
-#include "ITypeInstruction.h"
+#include "I_Type.h"
 
 using namespace std;
 
@@ -33,23 +33,45 @@ void IType::print()
     cout << "Immediate: 0x" << immediate << endl;
 }
 
-void IType::execute(long registers[32], unordered_map<long long int, long long int> dmem, int &pc)
+void IType::execute(long registers[32], unordered_map<long long int, long long int> dmem, unsigned int &pc)
 {
     unsigned int strHash = this->str2int(label.c_str(), 0);
 
     if (strHash == this->str2int("lw", 0))
     {
-        cout << "LW" << endl;
-        long dMemLocation = registers[rs] + rt;
+        //cout << "LW" << endl;
+        long dMemLocation = registers[rs] + immediate;
+
+        if (dmem.count(dMemLocation) <= 0)
+        {
+            dmem[dMemLocation] = 0;
+        }
 
         registers[rt] = dmem[dMemLocation];
+
+        cout << registerMap[rt] << " is modified to " << dmem[dMemLocation] << endl;
     }
     else if (strHash == this->str2int("sw", 0))
     {
-        cout << "SW" << endl;
+        //cout << "SW" << endl;
+        long dMemLocation = registers[rs] + immediate;
+
+        if (dmem.count(dMemLocation) <= 0)
+        {
+            dmem[dMemLocation] = 0;
+        }
+
+        dmem[dMemLocation] = registers[rt];
+
+        cout << "memory " << dMemLocation << " is modified to " << registers[rt] << endl;
     }
     else if (strHash == this->str2int("beq", 0))
     {
-        cout << "BEQ" << endl;
+        //cout << "BEQ" << endl;
+        if (registers[rs] == registers[rt])
+        {
+            pc = pc + (immediate)*4;
+            cout << "pc is modified to " << pc << endl;
+        }
     }
 }

@@ -7,9 +7,9 @@
 #include <iterator>
 #include "Decode.h"
 #include "Instruction.h"
-#include "RTypeInstruction.h"
-#include "ITypeInstruction.h"
-#include "JTypeInstruction.h"
+#include "R_Type.h"
+#include "I_Type.h"
+#include "J_Type.h"
 #include <unordered_map>
 //#include <boost/algorithm/string.hpp>
 
@@ -72,7 +72,7 @@ string convert_binary_to_hex_to_dec(string bin)
         unordered_map<string, char> bin_hex_map;
         createMap(&bin_hex_map);
 
-        int i = 0;
+        unsigned int i = 0;
         string hex = "";
 
         while (1)
@@ -135,7 +135,7 @@ string convert_binary_to_hex(string bin)
         unordered_map<string, char> bin_hex_map;
         createMap(&bin_hex_map);
 
-        int i = 0;
+        unsigned i = 0;
         string hex = "";
 
         while (1)
@@ -317,6 +317,6 @@ Instruction *decode(string binaryIn, unordered_map<long long int, string> regist
     {
         cout << "Instruction not found!" << endl;
         Instruction *noVal;
-        return noVal;
+        exit(1);
     }
 }
