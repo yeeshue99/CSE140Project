@@ -49,41 +49,47 @@ void RType::execute(long registers[32], unordered_map<long long int, long long i
         //cout << "ADD" << endl;
         long val = registers[rs] + registers[rt];
         registers[rd] = val;
-        cout << registerMap[rd] << " is modified to " << val << endl;
+        printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
     }
     else if (strHash == this->str2int("sub", 0))
     {
         //cout << "SUB" << endl;
         long val = registers[rs] - registers[rt];
         registers[rd] = val;
-        cout << registerMap[rd] << " is modified to " << val << endl;
+        printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
     }
     else if (strHash == this->str2int("and", 0))
     {
         //cout << "AND" << endl;
         long val = registers[rs] & registers[rt];
         registers[rd] = val;
-        cout << registerMap[rd] << " is modified to " << val << endl;
+        printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
     }
     else if (strHash == this->str2int("or", 0))
     {
         //cout << "OR" << endl;
         long val = registers[rs] | registers[rt];
         registers[rd] = val;
-        cout << registerMap[rd] << " is modified to " << val << endl;
+        printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
     }
     else if (strHash == this->str2int("slt", 0))
     {
         //cout << "SLT" << endl;
         long val = registers[rs] < registers[rt] ? 1 : 0;
         registers[rd] = val;
-        cout << registerMap[rd] << " is modified to " << val << endl;
+        printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
     }
     else if (strHash == this->str2int("nor", 0))
     {
         //cout << "NOR" << endl;
         long val = ~(registers[rs] | registers[rt]);
         registers[rd] = val;
-        cout << registerMap[rd] << " is modified to " << val << endl;
+        printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
     }
 }

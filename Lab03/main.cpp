@@ -121,7 +121,8 @@ int main(int argc, char *argv[])
         instructionToExecute->execute(registers, dmem, pc);
         //instructionToExecute->print();
         pc += 4;
-        cout << "pc is modified to " << pc << endl;
+        printf("pc is modified to %#x\n", pc);
+        //cout << "pc is modified to " << pc << endl;
         total_clock_cycles++;
         if (pc / 4 >= instructions.size() /* && with checking if all components are empty*/)
         {

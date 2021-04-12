@@ -49,7 +49,9 @@ void IType::execute(long registers[32], unordered_map<long long int, long long i
 
         registers[rt] = dmem[dMemLocation];
 
-        cout << registerMap[rt] << " is modified to " << dmem[dMemLocation] << endl;
+        printf("$%s is modified to %#llx\n", registerMap[rt].c_str(), dmem[dMemLocation]);
+
+        //cout << registerMap[rt] << " is modified to " << dmem[dMemLocation] << endl;
     }
     else if (strHash == this->str2int("sw", 0))
     {
@@ -63,7 +65,9 @@ void IType::execute(long registers[32], unordered_map<long long int, long long i
 
         dmem[dMemLocation] = registers[rt];
 
-        cout << "memory " << dMemLocation << " is modified to " << registers[rt] << endl;
+        printf("Memory %#lx is modified to %#lx\n", dMemLocation, registers[rt]);
+
+        //cout << "memory " << dMemLocation << " is modified to " << registers[rt] << endl;
     }
     else if (strHash == this->str2int("beq", 0))
     {
@@ -71,7 +75,7 @@ void IType::execute(long registers[32], unordered_map<long long int, long long i
         if (registers[rs] == registers[rt])
         {
             pc = pc + (immediate)*4;
-            cout << "pc is modified to " << pc << endl;
+            //cout << "pc is modified to " << pc << endl;
         }
     }
 }
