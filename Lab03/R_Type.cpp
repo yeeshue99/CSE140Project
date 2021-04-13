@@ -81,7 +81,15 @@ void RType::execute(long registers[32], unordered_map<long long int, long long i
         //cout << "SLT" << endl;
         long val = registers[rs] < registers[rt] ? 1 : 0;
         registers[rd] = val;
-        printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        if (!val)
+        {
+            printf("$%s is modified to 0x0\n", registerMap[rd].c_str());
+        }
+        else
+        {
+            printf("$%s is modified to %02lx\n", registerMap[rd].c_str(), val);
+        }
+
         //cout << registerMap[rd] << " is modified to " << val << endl;
     }
     else if (strHash == this->str2int("nor", 0))
