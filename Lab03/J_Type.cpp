@@ -36,3 +36,6 @@ void JType::execute(long registers[32], unordered_map<long long int, long long i
         pc = simpleBinaryToDecimal(immediate);
     }
 }
+
+void JType::writeBack(long registers[32], unordered_map<long long int, long long int> dmem){};
+void JType::memory(long registers[32], unordered_map<long long int, long long int> dmem){};

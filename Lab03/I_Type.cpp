@@ -40,18 +40,44 @@ void IType::execute(long registers[32], unordered_map<long long int, long long i
     if (strHash == this->str2int("lw", 0))
     {
         //cout << "LW" << endl;
-        long dMemLocation = registers[rs] + immediate;
 
-        if (dmem.count(dMemLocation) <= 0)
-        {
-            dmem[dMemLocation] = 0;
-        }
-
-        registers[rt] = dmem[dMemLocation];
-
-        printf("$%s is modified to %#llx\n", registerMap[rt].c_str(), dmem[dMemLocation]);
+        //printf("$%s is modified to %#llx\n", registerMap[rt].c_str(), dmem[dMemLocation]);
 
         //cout << registerMap[rt] << " is modified to " << dmem[dMemLocation] << endl;
+    }
+    else if (strHash == this->str2int("sw", 0))
+    {
+        //cout << "SW" << endl;
+        //long dMemLocation = registers[rs] + immediate;
+
+        //if (dmem.count(dMemLocation) <= 0)
+        //{
+        //dmem[dMemLocation] = 0;
+        //}
+
+        //dmem[dMemLocation] = registers[rt];
+
+        //printf("Memory %#lx is modified to %#lx\n", dMemLocation, registers[rt]);
+
+        //cout << "memory " << dMemLocation << " is modified to " << registers[rt] << endl;
+    }
+    else if (strHash == this->str2int("beq", 0))
+    {
+        //cout << "BEQ" << endl;
+        if (registers[rs] == registers[rt])
+        {
+            pc = pc + (immediate)*4 - 2 * 4;
+            //cout << "pc is modified to " << pc << endl;
+        }
+    }
+}
+
+void IType::writeBack(long registers[32], unordered_map<long long int, long long int> dmem)
+{
+    unsigned int strHash = this->str2int(label.c_str(), 0);
+
+    if (strHash == this->str2int("lw", 0))
+    {
     }
     else if (strHash == this->str2int("sw", 0))
     {
@@ -71,11 +97,32 @@ void IType::execute(long registers[32], unordered_map<long long int, long long i
     }
     else if (strHash == this->str2int("beq", 0))
     {
-        //cout << "BEQ" << endl;
-        if (registers[rs] == registers[rt])
+    }
+}
+void IType::memory(long registers[32], unordered_map<long long int, long long int> dmem)
+{
+    unsigned int strHash = this->str2int(label.c_str(), 0);
+
+    if (strHash == this->str2int("lw", 0))
+    {
+        //cout << "LW" << endl;
+        long dMemLocation = registers[rs] + immediate;
+
+        if (dmem.count(dMemLocation) <= 0)
         {
-            pc = pc + (immediate)*4;
-            //cout << "pc is modified to " << pc << endl;
+            dmem[dMemLocation] = 0;
         }
+
+        registers[rt] = dmem[dMemLocation];
+
+        printf("$%s is modified to %#llx\n", registerMap[rt].c_str(), dmem[dMemLocation]);
+
+        //cout << registerMap[rt] << " is modified to " << dmem[dMemLocation] << endl;
+    }
+    else if (strHash == this->str2int("sw", 0))
+    {
+    }
+    else if (strHash == this->str2int("beq", 0))
+    {
     }
 }

@@ -47,7 +47,71 @@ void RType::execute(long registers[32], unordered_map<long long int, long long i
     if (strHash == this->str2int("add", 0))
     {
         //cout << "ADD" << endl;
-        long val = registers[rs] + registers[rt];
+        val = registers[rs] + registers[rt];
+        //registers[rd] = val;
+        //printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
+    }
+    else if (strHash == this->str2int("sub", 0))
+    {
+        //cout << "SUB" << endl;
+        val = registers[rs] - registers[rt];
+        //registers[rd] = val;
+        //printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
+    }
+    else if (strHash == this->str2int("and", 0))
+    {
+        //cout << "AND" << endl;
+        val = registers[rs] & registers[rt];
+        //registers[rd] = val;
+        //printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
+    }
+    else if (strHash == this->str2int("or", 0))
+    {
+        //cout << "OR" << endl;
+        val = registers[rs] | registers[rt];
+        //registers[rd] = val;
+        //printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
+    }
+    else if (strHash == this->str2int("slt", 0))
+    {
+        //cout << "SLT" << endl;
+        val = registers[rs] < registers[rt] ? 1 : 0;
+        //registers[rd] = val;
+        if (!val)
+        {
+            //printf("$%s is modified to 0x0\n", registerMap[rd].c_str());
+        }
+        else
+        {
+            //printf("$%s is modified to %02lx\n", registerMap[rd].c_str(), val);
+        }
+
+        //cout << registerMap[rd] << " is modified to " << val << endl;
+    }
+    else if (strHash == this->str2int("nor", 0))
+    {
+        //cout << "NOR" << endl;
+        val = ~(registers[rs] | registers[rt]);
+        //registers[rd] = val;
+        //printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
+        //cout << registerMap[rd] << " is modified to " << val << endl;
+    }
+}
+
+void RType::writeBack(long registers[32], unordered_map<long long int, long long int> dmem)
+{
+}
+void RType::memory(long registers[32], unordered_map<long long int, long long int> dmem)
+{
+    unsigned int strHash = this->str2int(label.c_str(), 0);
+
+    if (strHash == this->str2int("add", 0))
+    {
+        //cout << "ADD" << endl;
         registers[rd] = val;
         printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
         //cout << registerMap[rd] << " is modified to " << val << endl;
@@ -55,7 +119,6 @@ void RType::execute(long registers[32], unordered_map<long long int, long long i
     else if (strHash == this->str2int("sub", 0))
     {
         //cout << "SUB" << endl;
-        long val = registers[rs] - registers[rt];
         registers[rd] = val;
         printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
         //cout << registerMap[rd] << " is modified to " << val << endl;
@@ -63,7 +126,6 @@ void RType::execute(long registers[32], unordered_map<long long int, long long i
     else if (strHash == this->str2int("and", 0))
     {
         //cout << "AND" << endl;
-        long val = registers[rs] & registers[rt];
         registers[rd] = val;
         printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
         //cout << registerMap[rd] << " is modified to " << val << endl;
@@ -71,7 +133,6 @@ void RType::execute(long registers[32], unordered_map<long long int, long long i
     else if (strHash == this->str2int("or", 0))
     {
         //cout << "OR" << endl;
-        long val = registers[rs] | registers[rt];
         registers[rd] = val;
         printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
         //cout << registerMap[rd] << " is modified to " << val << endl;
@@ -79,7 +140,6 @@ void RType::execute(long registers[32], unordered_map<long long int, long long i
     else if (strHash == this->str2int("slt", 0))
     {
         //cout << "SLT" << endl;
-        long val = registers[rs] < registers[rt] ? 1 : 0;
         registers[rd] = val;
         if (!val)
         {
@@ -95,7 +155,6 @@ void RType::execute(long registers[32], unordered_map<long long int, long long i
     else if (strHash == this->str2int("nor", 0))
     {
         //cout << "NOR" << endl;
-        long val = ~(registers[rs] | registers[rt]);
         registers[rd] = val;
         printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
         //cout << registerMap[rd] << " is modified to " << val << endl;

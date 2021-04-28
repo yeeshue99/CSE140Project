@@ -11,6 +11,11 @@
 
 using namespace std;
 
+bool componentsAreEmpty(int instructionToFetch, string instructionToDecode, Instruction *instructionToExecute, Instruction *instructionToMemory, Instruction *instructionToWriteBack)
+{
+    return (instructionToFetch < 0) && instructionToDecode.empty() && (instructionToExecute == NULL) && (instructionToMemory == NULL) && (instructionToWriteBack == NULL);
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -60,77 +65,99 @@ int main(int argc, char *argv[])
     unordered_map<long long int, string> registerSet;
     registerSet = load_register_file("registers.txt");
 
-    int instructionToFetch;
-    string instructionToDecode;
-    //Instruction *instructionAfterDecoding;
+    int instructionToFetch = -1;
+    string instructionToDecode = "\0";
+    Instruction *instructionAfterDecoding = NULL;
     Instruction *instructionToExecute = NULL;
-    //Instruction *instructionToMemory;
-    //Instruction *instructionToWriteBack;
+    Instruction *instructionToMemory = NULL;
+    Instruction *instructionToWriteBack = NULL;
 
+    unsigned int oldPc = 0;
     unsigned int pc = 0;
     bool stillRunning = true;
+    bool runOff = false;
     //bool isStalling = false;
 
     unsigned int total_clock_cycles = 0;
     while (stillRunning)
     {
         cout << "total_clock_cycles " << total_clock_cycles + 1 << " :" << endl;
-        /*
-#pragma region Active Operations
 
+#pragma region Active Operations
         if (!(instructionToWriteBack == NULL))
         {
-            instructionToWriteBack.writeBack();
+            instructionToWriteBack->writeBack(registers, dmem);
         }
 
         if (!(instructionToMemory == NULL))
         {
-            instructionToMemory.memory();
+            instructionToMemory->memory(registers, dmem);
         }
 
         if (!(instructionToExecute == NULL))
         {
-            instructionToExecute.execute();
+            instructionToExecute->execute(registers, dmem, pc);
         }
 
         if (!instructionToDecode.empty())
         {
-            instructionToExecute.decode();
+            instructionAfterDecoding = decode(instructionToDecode, registerSet, instructionSet);
         }
 
-        instructionToFetch = pc / 4;
 #pragma endregion
 
 #pragma region Advance Step
+        instructionToFetch = pc;
         instructionToWriteBack = instructionToMemory;
         instructionToMemory = instructionToExecute;
         instructionToExecute = instructionAfterDecoding;
-        instructionToDecode = instructions[instructionToFetch];
-        instructionToFetch = pc;
-#pragma endregion
-*/
-        instructionToFetch = pc / 4;
-        instructionToDecode = instructions[instructionToFetch];
-        // if (instructionToExecute != NULL)
-        // {
-        //     delete instructionToExecute;
-        //     instructionToExecute = NULL;
-        // }
-
-        instructionToExecute = decode(instructionToDecode, registerSet, instructionSet);
-        instructionToExecute->execute(registers, dmem, pc);
-        //instructionToExecute->print();
-        pc += 4;
-        printf("pc is modified to %#x\n", pc);
-        //cout << "pc is modified to " << pc << endl;
-        total_clock_cycles++;
-        if (pc / 4 >= instructions.size() /* && with checking if all components are empty*/)
+        if (instructionToDecode.empty())
         {
-            stillRunning = false;
+            instructionToExecute = NULL;
+        }
+        if (instructionToFetch >= 0 && !runOff && (instructionToFetch / 4 <= instructions.size() - 1))
+        {
+            instructionToDecode = instructions[instructionToFetch / 4];
+        }
+        else
+        {
+            instructionToDecode = "";
+            instructionAfterDecoding = NULL;
+        }
+
+#pragma endregion
+
+        if (oldPc != pc)
+        {
+            printf("Control Hazard Detected (flush 3 instructions)\n");
+            instructionToDecode = "";
+            instructionAfterDecoding = NULL;
+            instructionToExecute = NULL;
+        }
+
+        pc += 4;
+        oldPc = pc;
+        if (!runOff)
+        {
+            printf("pc is modified to %#x\n", pc);
+        }
+        total_clock_cycles++;
+        if (pc / 4 >= instructions.size() - 1)
+        {
+            runOff = true;
+        }
+
+        if (runOff)
+        {
+            pc = -1;
+            oldPc = pc;
+            if (componentsAreEmpty(instructionToFetch, instructionToDecode, instructionToExecute, instructionToMemory, instructionToWriteBack))
+            {
+                stillRunning = false;
+            }
         }
         cout << endl;
     }
-
     cout << "program terminated:" << endl;
     cout << "total execution time is " << total_clock_cycles << " cycles" << endl;
 
