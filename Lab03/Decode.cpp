@@ -266,15 +266,19 @@ unordered_map<long long int, string> load_register_file(string filename)
 Instruction *decode(string binaryIn, unordered_map<long long int, string> registerSet, unordered_map<string, string> instructionSet)
 {
     string firstSix = binaryIn.substr(0, 6);
-    string key;
+    string key = "";
     if (is_r_type_instruction(stoi(firstSix)))
     {
-        key = "r";
         key.append(binaryIn.substr(binaryIn.size() - 7));
         key.pop_back();
+        key.append("r");
+        key = string(key.rbegin(), key.rend());
 
         string label;
         label = instructionSet[key];
+
+        //cout << binaryIn << endl;
+        //cout << key << " " << label << endl;
 
         long int lastSix = stoi(binaryIn.substr(binaryIn.size() - 7));
 

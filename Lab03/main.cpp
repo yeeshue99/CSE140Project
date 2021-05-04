@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     inFile.open("input.txt");
     if (!inFile)
     {
-        cerr << "Unable to open file: input.txt";
+        cerr << "Unable to open file: input.txt\n";
         exit(1); // call system to stop
     }
 
