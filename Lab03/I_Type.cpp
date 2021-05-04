@@ -66,13 +66,41 @@ void IType::execute(long registers[32], unordered_map<long long int, long long i
         //cout << "BEQ" << endl;
         if (registers[rs] == registers[rt])
         {
-            pc = pc + (immediate)*4 - 2 * 4;
+            pc = pc + (immediate)*4;
             //cout << "pc is modified to " << pc << endl;
         }
     }
 }
 
 void IType::writeBack(long registers[32], unordered_map<long long int, long long int> dmem)
+{
+    unsigned int strHash = this->str2int(label.c_str(), 0);
+
+    if (strHash == this->str2int("lw", 0))
+    {
+        //cout << "LW" << endl;
+        long dMemLocation = registers[rs] + immediate;
+
+        if (dmem.count(dMemLocation) <= 0)
+        {
+            dmem[dMemLocation] = 0;
+        }
+
+        registers[rt] = dmem[dMemLocation];
+
+        printf("$%s is modified to %#llx\n", registerMap[rt].c_str(), dmem[dMemLocation]);
+
+        //cout << registerMap[rt] << " is modified to " << dmem[dMemLocation] << endl;
+    }
+    else if (strHash == this->str2int("sw", 0))
+    {
+    }
+    else if (strHash == this->str2int("beq", 0))
+    {
+    }
+}
+
+void IType::memory(long registers[32], unordered_map<long long int, long long int> dmem)
 {
     unsigned int strHash = this->str2int(label.c_str(), 0);
 
@@ -99,30 +127,16 @@ void IType::writeBack(long registers[32], unordered_map<long long int, long long
     {
     }
 }
-void IType::memory(long registers[32], unordered_map<long long int, long long int> dmem)
+
+long long int IType::getRS()
 {
-    unsigned int strHash = this->str2int(label.c_str(), 0);
-
-    if (strHash == this->str2int("lw", 0))
-    {
-        //cout << "LW" << endl;
-        long dMemLocation = registers[rs] + immediate;
-
-        if (dmem.count(dMemLocation) <= 0)
-        {
-            dmem[dMemLocation] = 0;
-        }
-
-        registers[rt] = dmem[dMemLocation];
-
-        printf("$%s is modified to %#llx\n", registerMap[rt].c_str(), dmem[dMemLocation]);
-
-        //cout << registerMap[rt] << " is modified to " << dmem[dMemLocation] << endl;
-    }
-    else if (strHash == this->str2int("sw", 0))
-    {
-    }
-    else if (strHash == this->str2int("beq", 0))
-    {
-    }
+    return rs;
+}
+long long int IType::getRT()
+{
+    return rt;
+}
+long long int IType::getRD()
+{
+    return -1;
 }

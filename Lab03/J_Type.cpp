@@ -33,9 +33,24 @@ void JType::execute(long registers[32], unordered_map<long long int, long long i
     if (strHash == this->str2int("j", 0))
     {
         //cout << "J" << endl;
-        pc = simpleBinaryToDecimal(immediate);
+        long long int temp = simpleBinaryToDecimal(immediate);
+        temp = temp >> 2;
+        pc += temp;
     }
 }
 
 void JType::writeBack(long registers[32], unordered_map<long long int, long long int> dmem){};
 void JType::memory(long registers[32], unordered_map<long long int, long long int> dmem){};
+
+long long int JType::getRS()
+{
+    return -1;
+}
+long long int JType::getRT()
+{
+    return -1;
+}
+long long int JType::getRD()
+{
+    return -1;
+}

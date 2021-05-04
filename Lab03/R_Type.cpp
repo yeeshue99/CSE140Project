@@ -105,6 +105,7 @@ void RType::execute(long registers[32], unordered_map<long long int, long long i
 void RType::writeBack(long registers[32], unordered_map<long long int, long long int> dmem)
 {
 }
+
 void RType::memory(long registers[32], unordered_map<long long int, long long int> dmem)
 {
     unsigned int strHash = this->str2int(label.c_str(), 0);
@@ -159,4 +160,17 @@ void RType::memory(long registers[32], unordered_map<long long int, long long in
         printf("$%s is modified to %#lx\n", registerMap[rd].c_str(), val);
         //cout << registerMap[rd] << " is modified to " << val << endl;
     }
+}
+
+long long int RType::getRS()
+{
+    return rs;
+}
+long long int RType::getRT()
+{
+    return rt;
+}
+long long int RType::getRD()
+{
+    return rd;
 }

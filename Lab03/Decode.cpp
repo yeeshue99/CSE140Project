@@ -320,3 +320,30 @@ Instruction *decode(string binaryIn, unordered_map<long long int, string> regist
         exit(1);
     }
 }
+
+bool checkStalling(Instruction *decoding, Instruction *executing, Instruction *memory)
+{
+    long long int rs = decoding->getRS();
+    long long int rt = decoding->getRT();
+    if (executing != NULL)
+    {
+        long long int rd = executing->getRD();
+
+        if (rd == rt || rd == rs)
+        {
+            return true;
+        }
+    }
+
+    if (memory != NULL)
+    {
+        long long int rd = memory->getRD();
+
+        if (rd == rt || rd == rs)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}

@@ -76,11 +76,19 @@ int main(int argc, char *argv[])
     unsigned int pc = 0;
     bool stillRunning = true;
     bool runOff = false;
-    //bool isStalling = false;
+    bool isStalling = false;
 
     unsigned int total_clock_cycles = 0;
     while (stillRunning)
     {
+        if (instructionToExecute != NULL)
+        {
+            isStalling = checkStalling(instructionToExecute, instructionToMemory, instructionToMemory);
+        }
+        else
+        {
+            isStalling = false;
+        }
         cout << "total_clock_cycles " << total_clock_cycles + 1 << " :" << endl;
 
 #pragma region Active Operations
@@ -94,14 +102,20 @@ int main(int argc, char *argv[])
             instructionToMemory->memory(registers, dmem);
         }
 
-        if (!(instructionToExecute == NULL))
+        if (!(instructionToExecute == NULL || isStalling))
         {
             instructionToExecute->execute(registers, dmem, pc);
         }
 
-        if (!instructionToDecode.empty())
+        if (!(instructionToDecode.empty() || isStalling))
         {
             instructionAfterDecoding = decode(instructionToDecode, registerSet, instructionSet);
+            isStalling = checkStalling(instructionAfterDecoding, instructionToExecute, instructionToMemory);
+
+            if (isStalling)
+            {
+                instructionToExecute = NULL;
+            }
         }
 
 #pragma endregion
@@ -135,9 +149,17 @@ int main(int argc, char *argv[])
             instructionToExecute = NULL;
         }
 
-        pc += 4;
+        if (!isStalling)
+        {
+            pc += 4;
+        }
+        else
+        {
+            printf("data hazard detected\n");
+        }
+
         oldPc = pc;
-        if (!runOff)
+        if (!(runOff || isStalling))
         {
             printf("pc is modified to %#x\n", pc);
         }

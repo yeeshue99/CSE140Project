@@ -7,19 +7,24 @@
 
 using namespace std;
 
-class JType: public Instruction {
-    private:
-        int op;
-        string label;
-        string immediate;
+class JType : public Instruction
+{
+private:
+    int op;
+    string label;
+    string immediate;
 
-    public:
-        JType(int op, string label);
-        JType(int op, string label, string immediate);
-        void print();
-        void execute(long registers[32], unordered_map<long long int, long long int> dmem, unsigned int &pc);
-        void writeBack(long registers[32], unordered_map<long long int, long long int> dmem);
-        void memory(long registers[32], unordered_map<long long int, long long int> dmem);
+public:
+    JType(int op, string label);
+    JType(int op, string label, string immediate);
+    void print();
+    void execute(long registers[32], unordered_map<long long int, long long int> dmem, unsigned int &pc);
+    void writeBack(long registers[32], unordered_map<long long int, long long int> dmem);
+    void memory(long registers[32], unordered_map<long long int, long long int> dmem);
+
+    long long int getRS();
+    long long int getRT();
+    long long int getRD();
 };
 
 #endif
